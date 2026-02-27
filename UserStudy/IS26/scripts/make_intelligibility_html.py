@@ -45,7 +45,7 @@ SECTION_ORDER = ["same_content_same_spk", "diff_content_diff_spk"]
 def write_table(f, wav_list: list, set_size: int, q_offset: int):
     """Write sets of rows for one section. Returns total questions written."""
     headers = [
-        "QID", "  Clip A  ", "  Clip B  ", "Which is more intelligible?",
+        "QID", "  Clip X (Reference)  ", "  Clip A  ", "  Clip B  ", "Which sounds more like X?",
         "Not at all confident", "|", "Somewhat confident", "|",
         "Quite a bit confident", "|", "Extremely confident"
     ]
@@ -62,6 +62,7 @@ def write_table(f, wav_list: list, set_size: int, q_offset: int):
             index = i * set_size + j
             row = wav_list[index]
             wav_id = row["id"]
+            wav_x = row["wav_fpath_x"]
             wav_a = row["wav_fpath_a"]
             wav_b = row["wav_fpath_b"]
             q_num = q_offset + index + 1
@@ -69,7 +70,7 @@ def write_table(f, wav_list: list, set_size: int, q_offset: int):
             f.write("\t\t<tr>\n")
             f.write(f"\t\t\t<td>Q{q_num}</td>\n")
 
-            for wav_url in (wav_a, wav_b):
+            for wav_url in (wav_x, wav_a, wav_b):
                 f.write("\t\t\t<td>\n\t\t\t\t<audio controls preload=\"none\">\n")
                 f.write(f"\t\t\t\t\t<source preload=\"none\" src=\"{html.escape(wav_url)}\" type=\"audio/wav\" />\n")
                 f.write("\t\t\t\t</audio>\n\t\t\t</td>\n")
@@ -99,7 +100,7 @@ def write_html(out_path: Path, sections: dict, set_size: int = 5):
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Intelligibility Test</title>
+<title>ABX Test</title>
 <style>
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
 h1 { margin: 0 0 12px; }
@@ -118,8 +119,8 @@ audio { width: 260px; }
 </style>
 </head>
 <body>
-<h1>Intelligibility Test</h1>
-<p class="note">For each question, listen to both clips and decide which one is more intelligible (easier to understand). Then mark your confidence.</p>
+<h1>ABX Test</h1>
+<p class="note">For each question, listen to the reference clip X, then clips A and B. Decide which of A or B sounds more like X. Then mark your confidence.</p>
 <div class="hr"></div>
 """)
         q_offset = 0
@@ -137,9 +138,9 @@ audio { width: 260px; }
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build Intelligibility A/B HTML from CSV and copy audio samples.")
+    parser = argparse.ArgumentParser(description="Build ABX HTML from CSV and copy audio samples.")
     parser.add_argument("--csv", type=Path, required=True,
-                        help="Path to CSV with columns: tvtsyn, ours")
+                        help="Path to CSV with columns: type, tgt, TVTSyn, Ours")
     parser.add_argument("--out_dir", type=Path, default=Path("."),
                         help="Directory in which to write index.html")
     parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Intelligibility"),
@@ -154,6 +155,7 @@ def main():
     random.seed(args.seed)
 
     samples_root = args.samples_root.resolve()
+    tgt_dir = samples_root / "tgt"
     tvtsyn_dir = samples_root / "vc" / "TVTSyn"
     ours_dir = samples_root / "vc" / "Ours"
 
@@ -166,17 +168,22 @@ def main():
             if row_type not in sections:
                 raise ValueError(f"Unknown type '{row_type}'. Expected one of: {list(sections.keys())}")
 
+            tgt_path = Path(row["tgt"]).expanduser()
             tvtsyn_path = Path(row["TVTSyn"]).expanduser()
             ours_path = Path(row["Ours"]).expanduser()
 
+            if not tgt_path.exists():
+                raise FileNotFoundError(f"Missing target file: {tgt_path}")
             if not tvtsyn_path.exists():
                 raise FileNotFoundError(f"Missing TVTSyn file: {tvtsyn_path}")
             if not ours_path.exists():
                 raise FileNotFoundError(f"Missing Ours file: {ours_path}")
 
+            tgt_dst = safe_copy(tgt_path, tgt_dir / tgt_path.name)
             tvtsyn_dst = safe_copy(tvtsyn_path, tvtsyn_dir / tvtsyn_path.name)
             ours_dst = safe_copy(ours_path, ours_dir / ours_path.name)
 
+            url_x = make_audio_url(args.public_base, tgt_dst.relative_to(samples_root))
             url_tvtsyn = make_audio_url(args.public_base, tvtsyn_dst.relative_to(samples_root))
             url_ours = make_audio_url(args.public_base, ours_dst.relative_to(samples_root))
 
@@ -184,13 +191,14 @@ def main():
             # wav_id encodes the assignment: TAO = TVTSyn→A, Ours→B; OAT = Ours→A, TVTSyn→B
             if random.random() < 0.5:
                 url_a, url_b = url_tvtsyn, url_ours
-                wav_id = f"INT_{row_type}_TAO_{tvtsyn_path.stem}"
+                wav_id = f"ABX_{row_type}_TAO_{tvtsyn_path.stem}"
             else:
                 url_a, url_b = url_ours, url_tvtsyn
-                wav_id = f"INT_{row_type}_OAT_{ours_path.stem}"
+                wav_id = f"ABX_{row_type}_OAT_{ours_path.stem}"
 
             sections[row_type].append({
                 "id": wav_id,
+                "wav_fpath_x": url_x,
                 "wav_fpath_a": url_a,
                 "wav_fpath_b": url_b,
             })

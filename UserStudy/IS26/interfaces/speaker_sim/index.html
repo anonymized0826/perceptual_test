@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Speaker Similarity ABX Test</title>
+<style>
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; }
+h1 { margin: 0 0 12px; }
+h2 { margin: 24px 0 8px; }
+table.tests { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+.tests td, .tests th { border: 1px solid #ddd; padding: 8px; vertical-align: middle; }
+.tests tr:nth-child(even){ background: #fafafa; }
+.tests th { background: #f2f2f2; text-align: left; }
+audio { width: 220px; }
+.select-cell select { width: 160px; }
+.center { text-align: center; }
+.muted { color: #666; font-size: 0.95rem; }
+.hr { height: 1px; background: #eee; margin: 16px 0; }
+.note { background: #fff9c4; padding: 8px 12px; border-radius: 8px; }
+</style>
+</head>
+<body>
+<h1>Speaker Similarity ABX Test</h1>
+<p class="note">For each question, listen to the reference clip X (target speaker), then clips A and B. Decide which of A or B sounds more like the same speaker as X. Then mark your confidence.</p>
+<div class="hr"></div>
+<h2>Set 1</h2>
+<table class="tests">
+	<thead>
+		<tr>
+			<th>QID</th>
+			<th>  Clip X (Reference)  </th>
+			<th>  Clip A  </th>
+			<th>  Clip B  </th>
+			<th>Which sounds more like X?</th>
+			<th>Not at all confident</th>
+			<th>|</th>
+			<th>Somewhat confident</th>
+			<th>|</th>
+			<th>Quite a bit confident</th>
+			<th>|</th>
+			<th>Extremely confident</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Q1</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_b0394.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H007874__8188_269288_000019_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H007874__8188_269288_000019_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H007874__8188_269288_000019_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H007874__8188_269288_000019_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q2</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_b0329.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H007867__2803_154328_000055_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H007867__2803_154328_000055_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H007867__2803_154328_000055_000001_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H007867__2803_154328_000055_000001" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q3</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_a0257.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H015238__6432_63723_000054_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H015238__6432_63723_000054_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H015238__6432_63723_000054_000001_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H015238__6432_63723_000054_000001" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q4</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/GX4a7FR8QNY_00059.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H005242__3915_98647_000017_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H005242__3915_98647_000017_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H005242__3915_98647_000017_000001_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H005242__3915_98647_000017_000001" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q5</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/GZQGZOmFU5U_00069.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H004005__251_118436_000016_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H004005__251_118436_000016_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H004005__251_118436_000016_000001_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H004005__251_118436_000016_000001" type="radio" value="7" /></td>
+		</tr>
+	</tbody>
+</table>
+<h2>Set 2</h2>
+<table class="tests">
+	<thead>
+		<tr>
+			<th>QID</th>
+			<th>  Clip X (Reference)  </th>
+			<th>  Clip A  </th>
+			<th>  Clip B  </th>
+			<th>Which sounds more like X?</th>
+			<th>Not at all confident</th>
+			<th>|</th>
+			<th>Somewhat confident</th>
+			<th>|</th>
+			<th>Quite a bit confident</th>
+			<th>|</th>
+			<th>Extremely confident</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Q6</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_a0142.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H015175__1701_141759_000035_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H015175__1701_141759_000035_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H015175__1701_141759_000035_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H015175__1701_141759_000035_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q7</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/GM4_ENG_0032_0.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H011981__8131_117016_000039_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H011981__8131_117016_000039_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H011981__8131_117016_000039_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H011981__8131_117016_000039_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q8</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/p255_125.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H018956__3005_163399_000043_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H018956__3005_163399_000043_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H018956__3005_163399_000043_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H018956__3005_163399_000043_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q9</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/p335_312.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H025314__700_122866_000025_000004.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H025314__700_122866_000025_000004.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H025314__700_122866_000025_000004_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H025314__700_122866_000025_000004" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q10</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_b0182.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H007972__8131_117017_000012_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H007972__8131_117017_000012_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H007972__8131_117017_000012_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H007972__8131_117017_000012_000000" type="radio" value="7" /></td>
+		</tr>
+	</tbody>
+</table>
+<h2>Set 3</h2>
+<table class="tests">
+	<thead>
+		<tr>
+			<th>QID</th>
+			<th>  Clip X (Reference)  </th>
+			<th>  Clip A  </th>
+			<th>  Clip B  </th>
+			<th>Which sounds more like X?</th>
+			<th>Not at all confident</th>
+			<th>|</th>
+			<th>Somewhat confident</th>
+			<th>|</th>
+			<th>Quite a bit confident</th>
+			<th>|</th>
+			<th>Extremely confident</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Q11</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/GM7_ENG_0073_1.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H012216__4446_2275_000006_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H012216__4446_2275_000006_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H012216__4446_2275_000006_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H012216__4446_2275_000006_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q12</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/Ay1cBC5TXUc_00090.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H005916__5694_64038_000015_000012.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H005916__5694_64038_000015_000012.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H005916__5694_64038_000015_000012_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H005916__5694_64038_000015_000012" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q13</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/EM7_ENG_0043_1.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H009458__260_123288_000044_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H009458__260_123288_000044_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_TAO_H009458__260_123288_000044_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_TAO_H009458__260_123288_000044_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q14</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/arctic_a0263.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H014422__8131_117016_000005_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H014422__8131_117016_000005_000000.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H014422__8131_117016_000005_000000_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H014422__8131_117016_000005_000000" type="radio" value="7" /></td>
+		</tr>
+		<tr>
+			<td>Q15</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/tgt/p282_215.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/Ours/H021618__260_123440_000024_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td>
+				<audio controls preload="none">
+					<source preload="none" src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/SpeakerSim/vc/TVTSyn/H021618__260_123440_000024_000001.wav" type="audio/wav" />
+				</audio>
+			</td>
+			<td class="select-cell">
+				<select class="form-control overall" name="SS_OAT_H021618__260_123440_000024_000001_Answer_overall">
+					<option selected value="0">- select one -</option>
+					<option value="1">Clip A</option>
+					<option value="-1">Clip B</option>
+				</select>
+			</td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="1" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="2" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="3" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="4" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="5" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="6" /></td>
+			<td class="center"><input name="SS_OAT_H021618__260_123440_000024_000001" type="radio" value="7" /></td>
+		</tr>
+	</tbody>
+</table>
+<p class="muted">Generated automatically.</p>
+</body>
+</html>
