@@ -125,7 +125,7 @@ audio { width: 260px; }
 </body>
 </html>""")
 
-
+# For MOS: python make_verifiability_html.py --public_base https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/MOS --csv ./mos.csv --samples_root ../Samples/MOS
 def main():
     parser = argparse.ArgumentParser(description="Build Verifiability HTML from CSV and copy audio samples.")
     parser.add_argument("--csv", type=Path, required=True, help="Path to CSV with columns: model,src,tgt,vc")

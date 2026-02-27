@@ -121,12 +121,12 @@ td:first-child, th:first-child { white-space: nowrap; }
         f.write("</body></html>")
 
 def main():
-    parser = argparse.ArgumentParser(description="Build MOS HTML from Samples/Verifiability layout.")
-    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Verifiability"),
-                        help="Local path to Samples/Verifiability")
+    parser = argparse.ArgumentParser(description="Build MOS HTML from Samples/Verifiability layout.") # need to run make_verifiability_html.py first to populate Samples/MOS
+    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/MOS"),
+                        help="Local path to Samples/MOS")
     parser.add_argument("--public_base", type=str, required=True,
                         help="Base URL that maps to samples_root on GitHub Pages, e.g., "
-                             "https://anonymized0826.github.io/perceptual_test/IS26/Samples/Verifiability/'")
+                             "https://anonymized0826.github.io/perceptual_test/IS26/Samples/MOS/'")
     parser.add_argument("--out_dir", type=Path, default=Path("."),
                         help="Directory where index.html will be written")
     parser.add_argument("--seed", type=int, default=2025)
