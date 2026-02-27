@@ -130,10 +130,10 @@ def main():
     parser = argparse.ArgumentParser(description="Build Verifiability HTML from CSV and copy audio samples.")
     parser.add_argument("--csv", type=Path, required=True, help="Path to CSV with columns: model,src,tgt,vc")
     parser.add_argument("--out_dir", type=Path, default=Path("."), help="Directory in which to write index.html")
-    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Verifiability2"), help="Where to copy audio samples")
+    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Verifiability"), help="Where to copy audio samples")
     parser.add_argument("--public_base", type=str, required=True,
                         help="Base URL that maps to `samples_root` on GitHub Pages, e.g., "
-                             "'https://anonymousis23.github.io/UserStudy/ICLR26/Samples/Verifiability2/'")
+                             "'https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Verifiability/'")
     parser.add_argument("--seed", type=int, default=1337)
     parser.add_argument("--set_size", type=int, default=5, help="Questions per set/section")
     args = parser.parse_args()
@@ -153,7 +153,7 @@ def main():
         for row in reader:
             model = row["model"].strip()
 
-            if model not in ("DarkStream", "slt24", "GenVC-small", "DarkStream-bottleneck-TVT-ns", "DarkStream-quant-TVT-ns"):
+            if model not in ("slt24","DarkStream", "GenVC-small", "TVTSyn", "Ours"):
                 continue
 
             # Some CSVs may include a leading empty column; DictReader handles by names, so we ignore it.

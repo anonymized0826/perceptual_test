@@ -122,11 +122,11 @@ td:first-child, th:first-child { white-space: nowrap; }
 
 def main():
     parser = argparse.ArgumentParser(description="Build MOS HTML from Samples/Verifiability layout.")
-    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Verifiability2"),
+    parser.add_argument("--samples_root", type=Path, default=Path("../Samples/Verifiability"),
                         help="Local path to Samples/Verifiability")
     parser.add_argument("--public_base", type=str, required=True,
                         help="Base URL that maps to samples_root on GitHub Pages, e.g., "
-                             "'https://anonymousis23.github.io/UserStudy/ICLR26/Samples/Verifiability2/'")
+                             "https://anonymized0826.github.io/perceptual_test/IS26/Samples/Verifiability/'")
     parser.add_argument("--out_dir", type=Path, default=Path("."),
                         help="Directory where index.html will be written")
     parser.add_argument("--seed", type=int, default=2025)
