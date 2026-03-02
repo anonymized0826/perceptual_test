@@ -109,7 +109,7 @@ audio { width: 220px; }
 def main():
     parser = argparse.ArgumentParser(description="Build Speaker Similarity ABX HTML from CSV.")
     parser.add_argument("--csv", type=Path, required=True,
-                        help="Path to CSV with columns: target, TVTSyn, Ours")
+                        help="Path to CSV with columns: target, TVTSyn, Ours, target_diff")
     parser.add_argument("--out_dir", type=Path, default=Path("."),
                         help="Directory in which to write index.html")
     parser.add_argument("--samples_root", type=Path, default=Path("../Samples/SpeakerSim"),
@@ -125,6 +125,7 @@ def main():
 
     samples_root = args.samples_root.resolve()
     tgt_dir = samples_root / "tgt"
+    tgt_diff_dir = samples_root / "tgt_diff"
     tvtsyn_dir = samples_root / "vc" / "TVTSyn"
     ours_dir = samples_root / "vc" / "Ours"
 
@@ -133,33 +134,88 @@ def main():
     with args.csv.open("r", encoding="utf-8") as fin:
         reader = csv.DictReader(fin)
         for row in reader:
-            tgt_path = Path(row["target"]).expanduser()
-            tvtsyn_path = Path(row["TVTSyn"]).expanduser()
-            ours_path = Path(row["Ours"]).expanduser()
+            tgt_path = Path(row["target"].strip()).expanduser()
+            tvtsyn_raw = row.get("TVTSyn", "").strip()
+            ours_raw = row.get("Ours", "").strip()
+            tgt_diff_raw = row.get("target_diff", "").strip()
+
+            has_tvtsyn = bool(tvtsyn_raw)
+            has_ours = bool(ours_raw)
+            has_tgt_diff = bool(tgt_diff_raw)
 
             if not tgt_path.exists():
                 raise FileNotFoundError(f"Missing target file: {tgt_path}")
-            if not tvtsyn_path.exists():
-                raise FileNotFoundError(f"Missing TVTSyn file: {tvtsyn_path}")
-            if not ours_path.exists():
-                raise FileNotFoundError(f"Missing Ours file: {ours_path}")
 
             tgt_dst = safe_copy(tgt_path, tgt_dir / tgt_path.name)
-            tvtsyn_dst = safe_copy(tvtsyn_path, tvtsyn_dir / tvtsyn_path.name)
-            ours_dst = safe_copy(ours_path, ours_dir / ours_path.name)
-
             url_x = make_audio_url(args.public_base, tgt_dst.relative_to(samples_root))
-            url_tvtsyn = make_audio_url(args.public_base, tvtsyn_dst.relative_to(samples_root))
-            url_ours = make_audio_url(args.public_base, ours_dst.relative_to(samples_root))
 
-            # Randomly assign TVTSyn/Ours to A/B to avoid order bias.
-            # TAO = TVTSyn→A, Ours→B; OAT = Ours→A, TVTSyn→B
-            if random.random() < 0.5:
-                url_a, url_b = url_tvtsyn, url_ours
-                wav_id = f"SS_TAO_{tvtsyn_path.stem}"
+            # Determine pair type: exactly two of (TVTSyn, Ours, target_diff) must be present.
+            if has_tvtsyn and has_ours and not has_tgt_diff:
+                # Pair: TVTSyn vs Ours
+                tvtsyn_path = Path(tvtsyn_raw).expanduser()
+                ours_path = Path(ours_raw).expanduser()
+                if not tvtsyn_path.exists():
+                    raise FileNotFoundError(f"Missing TVTSyn file: {tvtsyn_path}")
+                if not ours_path.exists():
+                    raise FileNotFoundError(f"Missing Ours file: {ours_path}")
+                tvtsyn_dst = safe_copy(tvtsyn_path, tvtsyn_dir / tvtsyn_path.name)
+                ours_dst = safe_copy(ours_path, ours_dir / ours_path.name)
+                url_tvtsyn = make_audio_url(args.public_base, tvtsyn_dst.relative_to(samples_root))
+                url_ours = make_audio_url(args.public_base, ours_dst.relative_to(samples_root))
+                # TAO = TVTSyn→A, Ours→B; OAT = Ours→A, TVTSyn→B
+                if random.random() < 0.5:
+                    url_a, url_b = url_tvtsyn, url_ours
+                    wav_id = f"SS_TAO_{tvtsyn_path.stem}"
+                else:
+                    url_a, url_b = url_ours, url_tvtsyn
+                    wav_id = f"SS_OAT_{ours_path.stem}"
+
+            elif has_tvtsyn and not has_ours and has_tgt_diff:
+                # Pair: TVTSyn vs target_diff
+                tvtsyn_path = Path(tvtsyn_raw).expanduser()
+                tgt_diff_path = Path(tgt_diff_raw).expanduser()
+                if not tvtsyn_path.exists():
+                    raise FileNotFoundError(f"Missing TVTSyn file: {tvtsyn_path}")
+                if not tgt_diff_path.exists():
+                    raise FileNotFoundError(f"Missing target_diff file: {tgt_diff_path}")
+                tvtsyn_dst = safe_copy(tvtsyn_path, tvtsyn_dir / tvtsyn_path.name)
+                tgt_diff_dst = safe_copy(tgt_diff_path, tgt_diff_dir / tgt_diff_path.name)
+                url_tvtsyn = make_audio_url(args.public_base, tvtsyn_dst.relative_to(samples_root))
+                url_tgt_diff = make_audio_url(args.public_base, tgt_diff_dst.relative_to(samples_root))
+                # TATd = TVTSyn→A, target_diff→B; TdAT = target_diff→A, TVTSyn→B
+                if random.random() < 0.5:
+                    url_a, url_b = url_tvtsyn, url_tgt_diff
+                    wav_id = f"SS_TATd_{tvtsyn_path.stem}"
+                else:
+                    url_a, url_b = url_tgt_diff, url_tvtsyn
+                    wav_id = f"SS_TdAT_{tvtsyn_path.stem}"
+
+            elif not has_tvtsyn and has_ours and has_tgt_diff:
+                # Pair: Ours vs target_diff
+                ours_path = Path(ours_raw).expanduser()
+                tgt_diff_path = Path(tgt_diff_raw).expanduser()
+                if not ours_path.exists():
+                    raise FileNotFoundError(f"Missing Ours file: {ours_path}")
+                if not tgt_diff_path.exists():
+                    raise FileNotFoundError(f"Missing target_diff file: {tgt_diff_path}")
+                ours_dst = safe_copy(ours_path, ours_dir / ours_path.name)
+                tgt_diff_dst = safe_copy(tgt_diff_path, tgt_diff_dir / tgt_diff_path.name)
+                url_ours = make_audio_url(args.public_base, ours_dst.relative_to(samples_root))
+                url_tgt_diff = make_audio_url(args.public_base, tgt_diff_dst.relative_to(samples_root))
+                # OATd = Ours→A, target_diff→B; TdAO = target_diff→A, Ours→B
+                if random.random() < 0.5:
+                    url_a, url_b = url_ours, url_tgt_diff
+                    wav_id = f"SS_OATd_{ours_path.stem}"
+                else:
+                    url_a, url_b = url_tgt_diff, url_ours
+                    wav_id = f"SS_TdAO_{ours_path.stem}"
+
             else:
-                url_a, url_b = url_ours, url_tvtsyn
-                wav_id = f"SS_OAT_{ours_path.stem}"
+                present = [k for k, v in [("TVTSyn", has_tvtsyn), ("Ours", has_ours), ("target_diff", has_tgt_diff)] if v]
+                raise ValueError(
+                    f"Row must have exactly 2 of (TVTSyn, Ours, target_diff) non-empty. "
+                    f"Got: {present} for target={row['target']}"
+                )
 
             wav_list.append({
                 "id": wav_id,

@@ -1,0 +1,2726 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Intelligibility Test</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Arial,
+          sans-serif;
+        margin: 24px;
+      }
+      h1 {
+        margin: 0 0 12px;
+      }
+      h2 {
+        margin: 24px 0 8px;
+      }
+      table.tests {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+      }
+      .tests td,
+      .tests th {
+        border: 1px solid #ddd;
+        padding: 8px;
+        vertical-align: middle;
+      }
+      .tests tr:nth-child(even) {
+        background: #fafafa;
+      }
+      .tests th {
+        background: #f2f2f2;
+        text-align: left;
+      }
+      audio {
+        width: 260px;
+      }
+      .select-cell select {
+        width: 160px;
+      }
+      .center {
+        text-align: center;
+      }
+      .muted {
+        color: #666;
+        font-size: 0.95rem;
+      }
+      .hr {
+        height: 1px;
+        background: #eee;
+        margin: 16px 0;
+      }
+      .note {
+        background: #fff9c4;
+        padding: 8px 12px;
+        border-radius: 8px;
+      }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script>
+      //The magic that lets us find the unselected questions
+
+      $(document).ready(function () {
+        $("#submitButton").click(check_buttons);
+      });
+
+      var check_buttons = function () {
+        //Get all the radio buttons
+        n_ckd = $("input[type=radio]:not(:checked)")
+          .toArray()
+          .reduce(
+            (acc, val) => (acc.includes(val.name) ? acc : acc.concat(val.name)),
+            [],
+          );
+
+        //Get all the checked buttons
+        ckd = $("input[type=radio]:checked")
+          .toArray()
+          .reduce(
+            (acc, val) => (acc.includes(val.name) ? acc : acc.concat(val.name)),
+            [],
+          );
+
+        //Filter out all the checked radio buttons from the not checked list
+        //We should get NOTHING if we've filled in every option
+        var unfilled = n_ckd.filter(function (x) {
+          return !ckd.includes(x);
+        });
+
+        if (unfilled.length > 0) {
+          alert(
+            "You have not rated your confidence for one or more of the questions.\nThe first one missing an answer is: " +
+              unfilled[0].substring(5, 8),
+          );
+          var any_unfilled = true;
+        } else {
+          var any_unfilled = false;
+        }
+
+        var unselected = $("select.overall")
+          .toArray()
+          .filter(function (x) {
+            return x.value == 0;
+          });
+
+        if (unselected.length > 0) {
+          alert(
+            "You have not rated 'Same or different?' for one or more of the questions.\nThe first one missing an answer is: " +
+              unselected[0].name.substring(5, 8),
+          );
+        }
+
+        return !any_unfilled && !unselected.length;
+      };
+    </script>
+    <script>
+      var reload_audio = function (e) {
+        console.log(e);
+
+        //Add in a nocache cheat
+        var src_selector = "audio[id=" + e + "] > source";
+        $(src_selector)[0].src =
+          $(src_selector)[0].src + "?nocache=" + new Date().getTime();
+        $("audio[id=" + e + "]")[0].load();
+        console.log($("audio[id=" + e + "]")[0].currentSrc);
+      };
+    </script>
+    <script>
+      var onclick_nocache = function (e) {
+        var currentSrc = $("audio[id=" + e + "]")[0].currentSrc;
+        $("audio[id=" + e + "]")[0].currentSrc =
+          currentSrc + "?nocache=" + new Date().getTime();
+        $("audio[id=" + e + "]>source")[0].src =
+          currentSrc + "?nocache=" + new Date().getTime();
+        $("audio[id=" + e + "]>a")[0].href =
+          currentSrc + "?nocache=" + new Date().getTime();
+      };
+    </script>
+  </head>
+  <body>
+    <h1><strong>Vibrant Test</strong></h1>
+    <hr />
+    <h3>
+      Below is a list of recordings organized in rows. Each row contains two
+      audio clips: A and B. Listen to both clips carefully and decide which one
+      is more vibrant (livelier or more energetic). After making your choice,
+      rate how confident you feel about your decision.
+    </h3>
+    <ul>
+      <li>
+        There are seven (7) levels of confidence, as shown in the tables below.
+        "|" means that your confidence level is between two levels. For example,
+        the "|" between "Not at all confident" and "Somewhat confident" means
+        that your confidence level is more than "Not at all confident" but less
+        than "Somewhat confident".
+      </li>
+      <li>
+        Please
+        <em
+          ><strong><span style="color: red">ignore</span></strong></em
+        >
+        the audio quality (e.g., noises, distortions) and instead focus on the
+        <em
+          ><strong><span style="color: red">vibrancy</span></strong></em
+        >
+        of the speaker.
+      </li>
+      <li>
+        You may listen to a sound more than once if needed; just click the play
+        button to replay.
+      </li>
+      <li>
+        Your responses will be manually screened to ensure that you made a
+        serious effort to rate the recordings. If your answers are determined to
+        be random or contain inconsistent answers, the task may be rejected and
+        you may not receive payment.
+      </li>
+      <li>
+        Please perform these tasks in a quiet place using a pair of good
+        headphones. It is recommended that you set the volume a bit higher than
+        normal for these tasks.
+      </li>
+      <li>
+        If you are having trouble viewing or listening to the sound clips,
+        please try completing the test in Google Chrome.
+      </li>
+      <li>
+        Please make sure that you've finished all the questions before
+        submitting.
+      </li>
+    </ul>
+    <hr />
+    <p class="note">
+      For each question, listen to both clips and decide which one is more
+      vibrant (livelier or more energetic). Then mark your confidence.
+    </p>
+    <div class="hr"></div>
+    <h2>Set 1</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more vibrant?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q1</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007930__5694_64025_000019_000005.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007930__5694_64025_000019_000005.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H007930__5694_64025_000019_000005_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007930__5694_64025_000019_000005"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q2</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H008044__5895_34629_000014_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H008044__5895_34629_000014_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H008044__5895_34629_000014_000001_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008044__5895_34629_000014_000001"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q3</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H010044__2277_149896_000018_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H010044__2277_149896_000018_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H010044__2277_149896_000018_000001_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010044__2277_149896_000018_000001"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q4</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H020362__7105_2330_000017_000002.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H020362__7105_2330_000017_000002.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H020362__7105_2330_000017_000002_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H020362__7105_2330_000017_000002"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q5</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H018391__3528_168669_000090_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H018391__3528_168669_000090_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H018391__3528_168669_000090_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018391__3528_168669_000090_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Set 2</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more intelligible?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q6</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007939__6313_66129_000091_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007939__6313_66129_000091_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H007939__6313_66129_000091_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007939__6313_66129_000091_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q7</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H018416__2277_149874_000026_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H018416__2277_149874_000026_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H018416__2277_149874_000026_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018416__2277_149874_000026_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q8</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H024680__7850_111771_000004_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H024680__7850_111771_000004_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H024680__7850_111771_000004_000001_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H024680__7850_111771_000004_000001"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q9</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H008382__7641_96684_000010_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H008382__7641_96684_000010_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H008382__7641_96684_000010_000003_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008382__7641_96684_000010_000003"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q10</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007834__8188_269290_000005_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007834__8188_269290_000005_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H007834__8188_269290_000005_000003_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007834__8188_269290_000005_000003"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Set 3</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more intelligible?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q11</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H008375__2277_149897_000049_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H008375__2277_149897_000049_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H008375__2277_149897_000049_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H008375__2277_149897_000049_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q12</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H019468__3853_163249_000088_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H019468__3853_163249_000088_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H019468__3853_163249_000088_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H019468__3853_163249_000088_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q13</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007893__237_126133_000028_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007893__237_126133_000028_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H007893__237_126133_000028_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007893__237_126133_000028_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q14</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007802__7975_280085_000004_000004.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007802__7975_280085_000004_000004.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H007802__7975_280085_000004_000004_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007802__7975_280085_000004_000004"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q15</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H011600__116_288047_000018_000005.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H011600__116_288047_000018_000005.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H011600__116_288047_000018_000005_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H011600__116_288047_000018_000005"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Set 4</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more intelligible?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q16</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H012171__5694_64038_000022_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H012171__5694_64038_000022_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H012171__5694_64038_000022_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H012171__5694_64038_000022_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q17</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H016571__5338_284437_000004_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H016571__5338_284437_000004_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H016571__5338_284437_000004_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H016571__5338_284437_000004_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q18</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007884__1686_142278_000060_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007884__1686_142278_000060_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H007884__1686_142278_000060_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007884__1686_142278_000060_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q19</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H010949__5105_28241_000021_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H010949__5105_28241_000021_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H010949__5105_28241_000021_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H010949__5105_28241_000021_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q20</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H020360__2035_147960_000018_000002.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H020360__2035_147960_000018_000002.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H020360__2035_147960_000018_000002_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H020360__2035_147960_000018_000002"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Set 5</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more intelligible?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q21</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H010976__7902_96592_000031_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H010976__7902_96592_000031_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H010976__7902_96592_000031_000001_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H010976__7902_96592_000031_000001"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q22</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H026204__1701_141760_000029_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H026204__1701_141760_000029_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H026204__1701_141760_000029_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H026204__1701_141760_000029_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q23</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007730__4198_12259_000001_000043.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007730__4198_12259_000001_000043.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H007730__4198_12259_000001_000043_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H007730__4198_12259_000001_000043"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q24</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H008647__1255_138279_000007_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H008647__1255_138279_000007_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H008647__1255_138279_000007_000003_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008647__1255_138279_000007_000003"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q25</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H008055__6313_66129_000076_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H008055__6313_66129_000076_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H008055__6313_66129_000076_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H008055__6313_66129_000076_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Set 6</h2>
+    <table class="tests">
+      <thead>
+        <tr>
+          <th>QID</th>
+          <th>Clip A</th>
+          <th>Clip B</th>
+          <th>Which is more intelligible?</th>
+          <th>Not at all confident</th>
+          <th>|</th>
+          <th>Somewhat confident</th>
+          <th>|</th>
+          <th>Quite a bit confident</th>
+          <th>|</th>
+          <th>Extremely confident</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Q26</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H007988__1630_102884_000013_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H007988__1630_102884_000013_000003.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H007988__1630_102884_000013_000003_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H007988__1630_102884_000013_000003"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q27</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H022552__8188_269290_000059_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H022552__8188_269290_000059_000001.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H022552__8188_269290_000059_000001_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H022552__8188_269290_000059_000001"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q28</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H013476__4294_9934_000033_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H013476__4294_9934_000033_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H013476__4294_9934_000033_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H013476__4294_9934_000033_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q29</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H009196__4507_16021_000034_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H009196__4507_16021_000034_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_TAO_H009196__4507_16021_000034_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_TAO_H009196__4507_16021_000034_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Q30</td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/Ours/H018583__6313_76958_000034_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td>
+            <audio controls preload="none">
+              <source
+                preload="none"
+                src="https://anonymized0826.github.io/perceptual_test/UserStudy/IS26/Samples/Vibrant/vc/TVTSyn/H018583__6313_76958_000034_000000.wav"
+                type="audio/wav"
+              />
+            </audio>
+          </td>
+          <td class="select-cell">
+            <select
+              class="form-control overall"
+              name="INT_OAT_H018583__6313_76958_000034_000000_Answer_overall"
+            >
+              <option selected value="0">- select one -</option>
+              <option value="1">Clip A</option>
+              <option value="-1">Clip B</option>
+            </select>
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="1"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="2"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="3"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="4"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="5"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="6"
+            />
+          </td>
+          <td class="center">
+            <input
+              name="INT_OAT_H018583__6313_76958_000034_000000"
+              type="radio"
+              value="7"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
+</html>
