@@ -2722,6 +2722,59 @@
         </tr>
       </tbody>
     </table>
-    <p class="muted">Generated automatically.</p>
+    <br /><br />
+    <h2>Post-Survey Questions</h2>
+    <p>
+      Have you participated in any such speech tasks before?
+      <select class="post-survey" name="Intelligibility_PT_Experience">
+        <option selected="selected" value="0">- select one -</option>
+        <option value="1">Yes</option>
+        <option value="-1">No</option>
+      </select>
+    </p>
+
+    <p>
+      How did you listen to the audio clips in this task?
+      <select class="post-survey" name="Intelligibility_PT_listening">
+        <option selected="selected" value="0">- select one -</option>
+        <option value="1">Laptop speaker</option>
+        <option value="2">Headphones</option>
+        <option value="3">Desktop speaker</option>
+        <option value="4">Other</option>
+      </select>
+    </p>
+
+    <p>
+      What is your native language?
+      <input
+        class="post-survey"
+        maxlength="100"
+        name="Intelligibility_PT_nativeLanguage"
+        size="20"
+        type="text"
+      />
+    </p>
+
+    <p>
+      What other languages do you speak?
+      <input
+        class="post-survey"
+        maxlength="100"
+        name="Intelligibility_PT_otherLanguages"
+        size="50"
+        type="text"
+      />
+    </p>
+
+    <p>Please suggest comments for improving this study:</p>
+
+    <p>
+      <textarea
+        class="post-survey"
+        cols="120"
+        name="Intelligibility_PT_comments"
+        rows="5"
+      ></textarea>
+    </p>
   </body>
 </html>
