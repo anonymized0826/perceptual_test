@@ -153,7 +153,7 @@ def main():
         for row in reader:
             model = row["model"].strip()
 
-            if model not in ("slt24","DarkStream", "GenVC-small", "TVTSyn", "Ours"):
+            if model not in ("GT_tgt", "slt24", "DarkStream", "GenVC-small", "TVTSyn", "Ours"):
                 continue
 
             # Some CSVs may include a leading empty column; DictReader handles by names, so we ignore it.
