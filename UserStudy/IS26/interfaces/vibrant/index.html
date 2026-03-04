@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Intelligibility Test</title>
+    <title>Vibrancy Test</title>
     <style>
       body {
         font-family:
@@ -66,11 +66,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
       //The magic that lets us find the unselected questions
-
-      $(document).ready(function () {
-        $("#submitButton").click(check_buttons);
-      });
-
       var check_buttons = function () {
         //Get all the radio buttons
         n_ckd = $("input[type=radio]:not(:checked)")
@@ -96,8 +91,7 @@
 
         if (unfilled.length > 0) {
           alert(
-            "You have not rated your confidence for one or more of the questions.\nThe first one missing an answer is: " +
-              unfilled[0].substring(5, 8),
+            "You have not rated your confidence for one or more of the questions."
           );
           var any_unfilled = true;
         } else {
@@ -112,8 +106,7 @@
 
         if (unselected.length > 0) {
           alert(
-            "You have not rated 'Same or different?' for one or more of the questions.\nThe first one missing an answer is: " +
-              unselected[0].name.substring(5, 8),
+            "You have not choosen 'Clip A or B' for one or more of the questions."
           );
         }
 
@@ -143,6 +136,121 @@
           currentSrc + "?nocache=" + new Date().getTime();
       };
     </script>
+    <script>
+    // ===================== Prolific + Google Sheets submission wiring =====================
+    const APPS_SCRIPT_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbytK3-9RIoBSh4mObm0poQwoSS4gYMCQJ7rsE9so0ITwwkDMdivSn0tAq8XXxlamlAMlg/exec";
+    const PROLIFIC_COMPLETION_URL = "https://app.prolific.com/submissions/complete?cc=CIGWAE8Z";
+
+    function getProlificParams() {
+      const p = new URLSearchParams(window.location.search);
+      return {
+        PROLIFIC_PID: p.get("PROLIFIC_PID") || "",
+        STUDY_ID: p.get("STUDY_ID") || "",
+        SESSION_ID: p.get("SESSION_ID") || ""
+      };
+    }
+
+    function collectResponsesFromTables() {
+      const out = [];
+
+      // Each table has its own tbody; iterate rows across all tables
+      document.querySelectorAll("table.tests tbody tr").forEach((tr) => {
+        if (tr.querySelectorAll("th").length > 0) return; // header row
+
+        const tds = tr.querySelectorAll("td");
+        if (!tds || tds.length === 0) return;
+
+        const questionIdText = (tds[0]?.innerText || "").trim();
+
+        const audioSrcs = Array.from(tr.querySelectorAll("audio source"))
+          .map(s => s.getAttribute("src") || "")
+          .filter(Boolean);
+
+        const sel = tr.querySelector("select.overall");
+        const overallName = sel ? (sel.getAttribute("name") || "") : "";
+        const choice = sel ? (sel.value || "0") : "0";
+
+        const confGroupName = overallName ? overallName.replace("_overall", "") : "";
+        const checked = confGroupName
+          ? document.querySelector(`input[type="radio"][name="${confGroupName}"]:checked`)
+          : null;
+
+        out.push({
+          question_id: questionIdText,
+          overall_name: overallName,
+          choice: choice,
+          confidence_group: confGroupName,
+          confidence: checked ? checked.value : "",
+          audio_a: audioSrcs[0] || "",
+          audio_b: audioSrcs[1] || "",
+          all_audio_in_row: audioSrcs
+        });
+      });
+
+      // Post-survey fields too
+      const post = {};
+      document.querySelectorAll(".post-survey").forEach(el => {
+        if (!el.name) return;
+        post[el.name] = el.value ?? "";
+      });
+
+      return { rows: out, post_survey: post };
+    }
+
+    async function submitToGoogleSheet(payload) {
+      // Prefer sendBeacon
+      try {
+        const blob = new Blob([JSON.stringify(payload)], { type: "text/plain" });
+        const ok = navigator.sendBeacon(APPS_SCRIPT_WEBAPP_URL, blob);
+        if (ok) return true;
+      } catch (e) {}
+
+      // Fallback fetch
+      const resp = await fetch(APPS_SCRIPT_WEBAPP_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain" },
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
+      return resp.ok;
+    }
+
+    async function submitAndRedirect() {
+      if (!check_buttons()) return;
+
+      const btn = document.getElementById("submitButton");
+      const statusEl = document.getElementById("submitStatus");
+      if (btn) btn.disabled = true;
+      if (statusEl) statusEl.textContent = "Submitting…";
+
+      const payload = {
+        prolific: getProlificParams(),
+        responses: collectResponsesFromTables(),
+        page: { url: window.location.href, referrer: document.referrer || "" },
+        ts: Date.now(),
+        user_agent: navigator.userAgent
+      };
+
+      try {
+        const ok = await submitToGoogleSheet(payload);
+        if (!ok) throw new Error("Apps Script endpoint returned non-OK.");
+
+        if (statusEl) statusEl.textContent = "Submitted. Redirecting…";
+        window.location.href = PROLIFIC_COMPLETION_URL;
+      } catch (e) {
+        if (statusEl) statusEl.textContent = "Upload failed. Please try again.";
+        alert("Upload failed.\n\nDetails: " + (e?.message || e));
+        if (btn) btn.disabled = false;
+      }
+    }
+
+    $(document).ready(function () {
+      $("#submitButton").off("click").on("click", function (e) {
+        e.preventDefault();
+        submitAndRedirect();
+      });
+    });
+  </script>
   </head>
   <body>
     <h1><strong>Vibrant Test</strong></h1>
@@ -2776,5 +2884,16 @@
         rows="5"
       ></textarea>
     </p>
+
+    <hr/>
+    <div style="width: 85%; margin: 18px auto; text-align: center;">
+      <button id="submitButton" style="font-size: 18px; padding: 10px 18px; cursor: pointer;">
+        Submit
+      </button>
+      <span id="submitStatus" style="margin-left: 12px; font-weight: 600;"></span>
+      <div style="margin-top: 10px; font-size: 13px; opacity: 0.8;">
+        Please click <strong>Submit</strong> only once. You will be redirected to Prolific after successful submission.
+      </div>
+    </div>
   </body>
 </html>

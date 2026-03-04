@@ -187,10 +187,6 @@ width: 150px;
 <script>
 //The magic that lets us find the unselected questions
 
-$(document).ready(function () {
-$("#submitButton").click(check_buttons);
-});
-
 var check_buttons = function () {
 //Get all the radio buttons
 n_ckd = $("input[type=radio]:not(:checked)")
