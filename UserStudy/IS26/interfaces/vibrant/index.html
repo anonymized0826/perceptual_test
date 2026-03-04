@@ -170,7 +170,7 @@
         const overallName = sel ? (sel.getAttribute("name") || "") : "";
         const choice = sel ? (sel.value || "0") : "0";
 
-        const confGroupName = overallName ? overallName.replace("_overall", "") : "";
+        const confGroupName = overallName ? overallName.replace("_Answer_overall", "") : "";
         const checked = confGroupName
           ? document.querySelector(`input[type="radio"][name="${confGroupName}"]:checked`)
           : null;
